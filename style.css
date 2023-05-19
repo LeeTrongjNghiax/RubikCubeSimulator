@@ -1,0 +1,297 @@
+:root {
+    --rubik-white-color: rgb(255 255 255 / 0.5);
+    --rubik-yellow-color: rgb(255 255 0 / 0.5);
+    --rubik-red-color: rgb(255 0 0 / 0.5);
+    --rubik-orange-color: rgb(255 165 0 / 0.5);
+    --rubik-green-color: rgb(0 255 0 / 0.5);
+    --rubik-blue-color: rgb(0 0 255 / 0.5);
+    --rubik-gray-color: rgb(20 20 20 / 0.5);
+
+    --rubik-white-color: rgb(255 255 255 / 1);
+    --rubik-yellow-color: rgb(255 255 0 / 1);
+    --rubik-red-color: rgb(255 0 0 / 1);
+    --rubik-orange-color: rgb(255 165 0 / 1);
+    --rubik-green-color: rgb(0 255 0 / 1);
+    --rubik-blue-color: rgb(0 0 255 / 1);
+    --rubik-gray-color: rgb(20 20 20 / 1);
+
+    --text-selection-color: rgb(0 0 0 / 1);
+    --text-selection-background-color: rgb(255 255 255 / 1);
+    --text-color: rgb(255 255 255 / 1);
+
+    --header-background-color: rgb(4 0 33 / 1);
+    --footer-background-color: rgb(4 0 33 / 1);
+
+    --background-color: rgb(20 20 33 / 1);
+    --primary-color: rgb(20 200 20 / 1);
+    --secondary-color: rgb(98, 0, 163);
+
+    --index-background-color: rgb(4 0 33 / 1);
+    --button-group-background-color: rgb(4 0 33 / 1);
+    --rubik-background-color: rgb(4 0 33 / 1);
+    --algorithm-background-color: rgb(4 0 33 / 1);
+    --load-more-background-color: rgb(48 48 48 / 0.5);
+
+    --button-state-notlearn: rgba(0 0 0 / 0.5);
+    --button-state-learning: rgba(200 200 0 / 0.5);
+    --button-state-learned: rgba(0 200 0 / 0.5);
+
+    --scrollbar-track-color: rgb(18 18 18 / 0.5);
+    --scrollbar-thumb-color: rgb(90 90 90 / 0.5);
+    --scrollbar-thumb-border-color: rgb(255 255 255 / 0.5);
+}
+
+html {
+    background-color: #111;
+}
+
+body {
+overflow-x: hidden;
+}
+
+* {
+padding: 0;
+margin: 0;
+font-family: monospace;
+box-sizing: border-box;
+font-size: 3vh;
+color: var(--text-color);
+}
+
+::-webkit-scrollbar {
+width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+background-color: rgb(18 18 18 / 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+background-color: rgb(90 90 90 / 0.5);
+border-radius: 0.5rem;
+border: 0.125rem solid rgb(255 255 255 / 0.5);
+}
+
+main {
+background-color: var(--background-color);
+}
+
+svg {
+width: 50vh;
+height: 50vh;
+background-color: var(--background-color);
+}
+
+svg g {
+opacity: 1;
+stroke-width: 0;
+stroke-opacity: 0.5;
+}
+
+main {
+display: flex;
+align-items: center;
+justify-content: space-around;
+margin: 1vw;
+}
+
+main .input {
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+margin-right: auto;
+margin-left: 1vw;
+}
+
+main .input .inp1, 
+main .input .inp2 {
+width: 100%;
+display: flex;
+align-items: center;
+flex-direction: column;
+margin-top: 1vw;
+}
+
+.algGrp {
+display: flex;
+width: 100%;
+flex-direction: row;
+gap: 1vw;
+}
+
+.algGrp .algorithm {
+    flex: 10;
+}
+
+.algGrp .degGrp {
+    display: flex;
+    gap: 1vw;
+    flex: 10;
+}
+
+.algGrp .degGrp .clear {
+flex: 3;
+}
+
+.algGrp .degGrp .degree {
+flex: 3;
+}
+
+.algGrp .degGrp .degree-result {
+flex: 2;
+}
+
+main .input .inp0 {
+width: 100%;
+flex-direction: column;
+display: flex;
+align-items: center;
+gap: 1vw;
+}
+
+main .input .inp1 .inp1BtnGrp, 
+main .input .inp2 .inp2BtnGrp {
+display: flex;
+align-items: center;
+gap: 1vw;
+margin: 0;
+width: 100%;
+}
+
+.top, .bottom {
+display: flex;
+flex-direction: row;
+gap: 1vw;
+}
+
+.bottom1 {
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: row;
+gap: 1vw;
+}
+
+input {
+margin-right: auto;
+box-sizing: border-box;
+padding: 1vw;
+width: 100%;
+border: 0.5vw solid rgb(48 48 48);
+background: rgb(0 0 0);
+}
+
+button, select {
+user-select: none;
+display: inline-block;
+padding: 1vw;
+margin: 1vw 0vw 1vw 0vw;
+border-radius: 1vw;
+border: 0.5vw solid rgb(100 100 100);
+background-color: var(--background-color);
+}
+.move {
+border: 0.5vw solid rgb(0 100 0);
+background: rgb(0 50 0);
+}
+.reset {
+border: 0.5vw solid rgb(100 0 0);
+background: rgb(50 0 0);
+}
+.reverse {
+border: 0.5vw solid rgb(100 100 100);
+background: rgb(18 18 18);
+}
+.inverse {
+border: 0.5vw solid rgb(100 100 100);
+background: rgb(18 18 18);
+}
+.mirror {
+border: 0.5vw solid rgb(100 100 100);
+background: rgb(18 18 18);
+}
+.rotate  {
+border: 0.5vw solid rgb(100 100 100);
+background: rgb(18 18 18);
+}
+.btnGroup {
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 1vw;
+}
+
+.btnGroup button {
+user-select: none;
+flex-grow: 1;
+background-color: var(--header-background-color);
+padding: 0.25vw;
+margin: 0;
+}
+
+@media (orientation: portrait) {
+svg {
+    width: 50vw;
+    height: 50vw;
+}
+}
+
+@media (width <= 1050px) {
+main {
+    /* background-color: blue; */
+    flex-direction: column;
+}
+.inp1BtnGrp {
+    flex-direction: column;
+}
+.algGrp {
+    flex-direction: column;
+}
+.algGrp .degGrp .clear {
+    flex: 5;
+}
+.algGrp .degGrp .degree {
+    flex: 5;
+}
+.algGrp .degGrp .degree-result {
+    flex: 2;
+}
+.top {
+    display: flex;
+    width: 100%;
+    gap: 1vw;
+}
+.bottom {
+    width: 100%;
+}
+.bottom1 button {
+    flex-grow: 1;
+}
+.move, .reset {
+    width: 100%;
+}
+}
+@media (width <= 550px) {
+* {
+    font-size: 2vh;
+}
+main .input .inp1, main .input .inp2 {
+    /* background-color: red; */
+    flex-direction: column;
+}
+main .input .inp1 .inp1BtnGrp button {
+    flex-grow: 1;
+}
+.bottom {
+    flex-direction: column;
+}
+.bottom1 {
+    width: 100%;
+}
+.inp2BtnGrp {
+    flex-direction: column;
+}
+}

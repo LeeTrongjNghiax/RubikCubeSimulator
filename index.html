@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="dark light">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+
+</head>
+<body>
+
+  <main>
+    <div class="img" data-state="3d">
+
+    </div>
+    <div class="input">
+      <div class="inp0">
+      </div>
+      <div class="inp1">
+        <div class="algGrp">
+          <input class="algorithm" type="text" pattern="(U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2)( (U|D|F|B|R|L|u|d|f|B|r|l|M|E|S|x|y|z)(|'|2))*">
+          <div class="degGrp">
+            <button class="clear">Clear Algorithm</button>
+            <button class="degree">Get Degree!</button>
+            <input type="text" class="degree-result">
+          </div>
+        </div>
+        <div class="inp1BtnGrp">
+          <div class="top">
+            <button class="move">Move!</button>
+            <button class="reset">Reset</button>
+          </div>
+          <div class="bottom">
+            <div class="bottom1">
+              <button class="reverse">Reverse Algoritihm</button>
+              <button class="inverse">Inverse Algorithm</button>
+            </div>
+            <div class="bottom1">
+              <button class="mirror">Mirror Algorithm</button>
+              <button class="rotate">Rotate Algorithm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="inp2">
+        <input class="image" type="text" size=31.5>
+        <div class="inp2BtnGrp">
+          <div class="bottom1">
+            <button class="load">Load Rubik Cube</button>
+            <button class="copy">Copy Rubik Cube</button>  
+          </div>
+          <div class="bottom1">
+            <select name="rubikType" id="">
+              <option value="crossCube">Cross Cube</option>
+              <option value="f2lCube">F2L Cube</option>
+              <option value="ollCube">OLL Cube</option>
+              <option value="solvedCube">Solved Cube</option>
+              <option value="randomCube">Random Cube</option>
+            </select>
+            <select name="direction" id="">
+              <option value="x">X</option>
+              <option value="y">Y</option>
+              <option value="z">Z </option>
+            </select>
+            <button class="lmao" style="display: none;">Lmao</button>
+            <button class="toggleState">3D Rubik's Cube</button>
+          </div>
+        </div>
+      </div>
+      <div class="step"></div>
+    </div>  
+  </main>
+
+  <script>
+    let randoms = [];
+    // y R: 1260
+    // F U d; 5040
+    // M R' M' z': 1680
+    document.querySelector(".algorithm").value = "F U d";
+    document.querySelector(".img").insertAdjacentHTML( 'beforeend', stringImageTo3DImage( RUBIK_CUBE.replace(/(_|\|)/g, "") ) );
+    document.querySelector(".image").value = RUBIK_CUBE;
+
+    document.querySelector(".degree").addEventListener("click", async function() {
+      let count = 0;
+      let str = RUBIK_CUBE;
+      
+      document.querySelector(".load").click();
+           document.querySelector(".degree-result").value = ".";
+      
+      await sleep(100);
+           document.querySelector(".degree-result").value = "..";
+      
+      await sleep(100);
+      document.querySelector(".degree-result").value = "...";
+      
+      await sleep(100);
+
+      do {
+        str = turn( str.replace(/(_|\|)/g, ""), document.querySelector(".algorithm").value );
+        count++;
+      } while (str != RUBIK_CUBE);
+
+      document.querySelector(".degree-result").value = count;
+    });
+
+    document.querySelector(".clear").addEventListener("click", () => 
+        document.querySelector(".algorithm").value = ""
+    );
+
+    document.querySelector(".move").addEventListener("click", () => 
+      updateCube( turn( document.querySelector(".image").value.replace(/(_|\|)/g, ""), document.querySelector(".algorithm").value ) )
+    );
+
+    document.querySelector(".reset").addEventListener("click", () => 
+      updateCube(RUBIK_CUBE)
+    );
+
+    document.querySelector(".reverse").addEventListener("click", () => {
+      document.querySelector(".algorithm").value = 
+        document.querySelector(".algorithm").value.split(" ").reverse().join(" ");
+    });
+
+    document.querySelector(".inverse").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      arr.forEach(elem => {
+        if (elem.match(/^\w$/)) result.push(elem + "'");
+        else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+        else result.push(elem);
+      });
+
+      algorithm.value = result.join(" ");
+    });
+
+    document.querySelector(".mirror").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      switch (document.querySelector("select[name=direction]").value) {
+        case "x":
+          arr.forEach(elem => {
+            if (elem.match(/^R$/)) result.push(elem.replace("R", "L'"));
+            else if (elem.match(/^L$/)) result.push(elem.replace("L", "R'"));
+            else if (elem.match(/^R'$/)) result.push(elem.replace("R'", "L"));
+            else if (elem.match(/^L'$/)) result.push(elem.replace("L'", "R"));
+            else if (elem.match(/^r$/)) result.push(elem.replace("r", "l'"));
+            else if (elem.match(/^l$/)) result.push(elem.replace("l", "r'"));
+            else if (elem.match(/^r'$/)) result.push(elem.replace("r'", "l"));
+            else if (elem.match(/^l'$/)) result.push(elem.replace("l'", "r"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+        case "y":
+          arr.forEach(elem => {
+            if (elem.match(/^U$/)) result.push(elem.replace("U", "D'"));
+            else if (elem.match(/^D$/)) result.push(elem.replace("D", "U'"));
+            else if (elem.match(/^U'$/)) result.push(elem.replace("U'", "D"));
+            else if (elem.match(/^D'$/)) result.push(elem.replace("D'", "U"));
+            else if (elem.match(/^u$/)) result.push(elem.replace("u", "d'"));
+            else if (elem.match(/^d$/)) result.push(elem.replace("d", "u'"));
+            else if (elem.match(/^u'$/)) result.push(elem.replace("u'", "d"));
+            else if (elem.match(/^d'$/)) result.push(elem.replace("d'", "u"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+        case "z":
+          arr.forEach(elem => {
+            if (elem.match(/^F$/)) result.push(elem.replace("F", "B'"));
+            else if (elem.match(/^B$/)) result.push(elem.replace("B", "F'"));
+            else if (elem.match(/^F'$/)) result.push(elem.replace("F'", "B"));
+            else if (elem.match(/^B'$/)) result.push(elem.replace("B'", "F"));
+            else if (elem.match(/^f$/)) result.push(elem.replace("f", "b'"));
+            else if (elem.match(/^b$/)) result.push(elem.replace("b", "f'"));
+            else if (elem.match(/^f'$/)) result.push(elem.replace("f'", "b"));
+            else if (elem.match(/^b'$/)) result.push(elem.replace("b'", "f"));
+            else if (elem.match(/^[MES]['2]?$/)) result.push(elem);
+            else if (elem.match(/^\w$/)) result.push(elem + "'");
+            else if (elem.match(/^\w'$/)) result.push(elem.replace("'", ""));
+            else result.push(elem);
+          });
+          break;
+      }
+
+      algorithm.value = result.join(" ");
+    });
+
+    document.querySelector(".rotate").addEventListener("click", () => {
+      let algorithm = document.querySelector(".algorithm");
+      let arr = algorithm.value.split(" ");
+      let result = [];
+
+      switch (document.querySelector("select[name=direction]").value) {
+        case "x":
+          arr.forEach(elem => {
+            if (elem.match(/^R['2]?$/)) result.push(elem.replace("R", "L"));
+            else if (elem.match(/^L['2]?$/)) result.push(elem.replace("L", "R"));
+            else if (elem.match(/^r['2]?$/)) result.push(elem.replace("r", "l"));
+            else if (elem.match(/^l['2]?$/)) result.push(elem.replace("l", "r"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+        case "y":
+          arr.forEach(elem => {
+            if (elem.match(/^U['2]?$/)) result.push(elem.replace("U", "D"));
+            else if (elem.match(/^D['2]?$/)) result.push(elem.replace("D", "U"));
+            else if (elem.match(/^u['2]?$/)) result.push(elem.replace("u", "d"));
+            else if (elem.match(/^d['2]?$/)) result.push(elem.replace("d", "u"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+        case "z":
+          arr.forEach(elem => {
+            if (elem.match(/^F['2]?$/)) result.push(elem.replace("F", "B"));
+            else if (elem.match(/^B['2]?$/)) result.push(elem.replace("B", "F"));
+            else if (elem.match(/^f['2]?$/)) result.push(elem.replace("f", "b"));
+            else if (elem.match(/^b['2]?$/)) result.push(elem.replace("b", "f"));
+            else if (elem.match(/^[MES]'$/)) result.push(elem.replace("'", ""));
+            else if (elem.match(/^[MES]$/)) result.push(elem + "'");
+            else result.push(elem);
+          });
+          break;
+      }
+
+      algorithm.value = result.join(" ");
+    });
+    
+    document.querySelector(".load").addEventListener("click", () => {
+      switch (document.querySelector("select").value) {
+        case "crossCube": 
+          document.querySelector(".image").value = "011111111102222222220333333333044444444405555555550666666666";
+          break;
+        case "f2lCube": 
+          document.querySelector(".image").value = "011111111102222222220333333333044444444405555555550666666666";
+          break;
+        case "ollCube": 
+          document.querySelector(".image").value = "011111111102222222220333333333044444444405555555550666666666";
+          break;
+        case "solvedCube": 
+          document.querySelector(".image").value = RUBIK_CUBE;
+          break;
+        case "randomCube": 
+          let gs = generateScramble(20);
+          randoms.push(gs);
+          document.querySelector('.algorithm').value = gs;
+          document.querySelector(".image").value = turn( RUBIK_CUBE, gs );
+          break;
+      }
+      updateCube(document.querySelector(".image").value);
+    });
+
+    document.querySelector(".copy").addEventListener("click", () => {
+      navigator.clipboard.writeText(document.querySelector(".image").value);
+      alert`Rubik Cube copied to clipboard!`;
+    });
+
+    document.querySelector(".lmao").addEventListener("click", () => {
+      // paste(document.querySelector(".algorithm"));
+      document.querySelector(".inverse").click();
+      document.querySelector(".reverse").click();
+      document.querySelector(".reset").click();
+      document.querySelector(".move").click();
+      document.querySelector(".copy").click();
+    });
+
+    document.querySelector(".toggleState").addEventListener("click", () => {
+      if (document.querySelector(".img").dataset.state == "3d") {
+        document.querySelector(".img").dataset.state = "2d";
+        document.querySelector(".toggleState").innerText = "2D Rubik's Cube";
+      }
+      else {
+        document.querySelector(".img").dataset.state = "3d";
+        document.querySelector(".toggleState").innerText = "3D Rubik's Cube";
+      }
+
+      updateCube(document.querySelector(".image").value);
+    });
+
+    addNewMove();
+  </script>
+</body>
+</html>
